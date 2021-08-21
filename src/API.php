@@ -7,51 +7,56 @@ class API {
 	private $access_token;
 	
 	// Holds the api endpoint used
-	public $api_endpoint;
+	private $api_endpoint;
 	
 	// The cache for request results - an array that matches md5 of the unique API request to the returned result
 	public $request_cache;
 	
 	// Sets the reqeuest method for cURL
-	public $api_request_method = 'GET';
+	private $api_request_method;
 	
 	// Holds POST for cURL for requests other than GET
-	public $curl_postfields = false;
+	private $curl_postfields;
 	
 	// Sets the format the return from the API is parsed and returned - array (assoc), object, or raw JSON
-	public $api_return_format;
+	private $api_return_format;
 	
 	
-	public function __construct($access_token) {
+	public function __construct($access_token, $api_endpoint = "https://www.patreon.com/api/oauth2/v2/", $api_request_method = 'GET', $api_return_format = 'array', $curl_postfields = false) {
 		
 		// Set the access token
 		$this->access_token = $access_token;
 		
 		// Set API endpoint to use. Its currently V2
-		$this->api_endpoint = "https://www.patreon.com/api/oauth2/v2/";
+		$this->api_endpoint = $api_endpoint;
 		
-		// Set default return format - this can be changed by the app using the lib by setting it 
-		// after initialization of this class
-		$this->api_return_format = 'array';
+		// Set default return format
+		$this->api_return_format = $api_return_format;
+		
+		// Set curl post fields flag
+		$this->curl_postfields = $curl_postfields;
+		
+		// Set API request method
+		$this->api_request_method = $api_request_method;
 		
 	}
 
-	public function fetch_user() {
+	public function fetch_user( $args = array() ) {
 		// Fetches details of the current token user. 
-		return $this->get_data('identity?include=memberships&fields'.urlencode('[user]').'=email,first_name,full_name,image_url,last_name,thumb_url,url,vanity,is_email_verified&fields'.urlencode('[member]').'=currently_entitled_amount_cents,lifetime_support_cents,last_charge_status,patron_status,last_charge_date,pledge_relationship_start');
+		return $this->get_data('identity?include=memberships&fields'.urlencode('[user]').'=email,first_name,full_name,image_url,last_name,thumb_url,url,vanity,is_email_verified&fields'.urlencode('[member]').'=currently_entitled_amount_cents,lifetime_support_cents,last_charge_status,patron_status,last_charge_date,pledge_relationship_start', $args);
 	}
 
-	public function fetch_campaigns() {
+	public function fetch_campaigns( $args = array() ) {
 		// Fetches the list of campaigns of the current token user. Requires the current user to be creator of the campaign or requires a creator access token
 		return $this->get_data("campaigns");
 	}
 	
-	public function fetch_campaign_details($campaign_id) {
+	public function fetch_campaign_details($campaign_id, $args = array() ) {
 		// Fetches details about a campaign - the membership tiers, benefits, creator and goals.  Requires the current user to be creator of the campaign or requires a creator access token
 		return $this->get_data("campaigns/{$campaign_id}?include=benefits,creator,goals,tiers");
 	}
 	
-	public function fetch_member_details($member_id) {
+	public function fetch_member_details($member_id, $args = array() ) {
 		// Fetches details about a member from a campaign. Member id can be acquired from fetch_page_of_members_from_campaign
 		// currently_entitled_tiers is the best way to get info on which membership tiers the user is entitled to.  Requires the current user to be creator of the campaign or requires a creator access token.
 		return $this->get_data("members/{$member_id}?include=address,campaign,user,currently_entitled_tiers");
@@ -98,30 +103,41 @@ class API {
 
 		// don't try to parse a 500-class error, as it's likely not JSON
 		if ( $info['http_code'] >= 500 ) {
-		  return $this->add_to_request_cache($api_request_hash, $json_string);
+			if ( !isset( $args['skip_add_to_cache']) ) {
+				return $this->add_to_request_cache($api_request_hash, $json_string);
+			} else {
+				return $json_string;
+			}
 		}
 		
 		// don't try to parse a 400-class error, as it's likely not JSON
 		if ( $info['http_code'] >= 400 ) {
-		  return $this->add_to_request_cache($api_request_hash, $json_string);
+			if ( !isset( $args['skip_add_to_cache']) ) {
+				return $this->add_to_request_cache($api_request_hash, $json_string);
+			} else {
+				return $json_string;
+			}
 		}
 
 		// Parse the return according to the format set by api_return_format variable
 
 		if( $this->api_return_format == 'array' ) {
-		  $return = json_decode($json_string, true);
+			$return = json_decode($json_string, true);
+		} elseif ( $this->api_return_format == 'object' ) {
+			$return = json_decode($json_string);
+		} elseif ( $this->api_return_format == 'json' ) {
+			$return = $json_string;
 		}
 
-		if( $this->api_return_format == 'object' ) {
-		  $return = json_decode($json_string);
+		// Check if we skip adding this request to the cache
+		if ( !isset( $args['skip_add_to_cache']) ) {
+			// Add this new request to the request cache and return it
+			return $this->add_to_request_cache($api_request_hash, $return);
+		} else {
+			// Return this request
+			return $return;
 		}
-
-		if( $this->api_return_format == 'json' ) {
-		  $return = $json_string;
-		}
-
-		// Add this new request to the request cache and return it
-		return $this->add_to_request_cache($api_request_hash, $return);
+		
 
 	}
 
