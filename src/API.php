@@ -7,19 +7,19 @@ class API {
 	private $access_token;
 	
 	// Holds the api endpoint used
-	private $api_endpoint;
+	public $api_endpoint;
 	
 	// The cache for request results - an array that matches md5 of the unique API request to the returned result
 	public $request_cache;
 	
 	// Sets the reqeuest method for cURL
-	private $api_request_method;
+	public $api_request_method;
 	
 	// Holds POST for cURL for requests other than GET
-	private $curl_postfields;
+	public $curl_postfields;
 	
 	// Sets the format the return from the API is parsed and returned - array (assoc), object, or raw JSON
-	private $api_return_format;
+	public $api_return_format;
 	
 	
 	public function __construct($access_token, $api_endpoint = "https://www.patreon.com/api/oauth2/v2/", $api_request_method = 'GET', $api_return_format = 'array', $curl_postfields = false) {
