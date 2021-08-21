@@ -2,6 +2,10 @@
 
 Interact with the Patreon API via OAuth.
 
+## Differences from Patreon/patreon-php
+
+This code has been modified in several ways but should be hot-swap capable with Patreon/patreon-php. In particular, it removes an unused variable on the OAuth.php refresh_token function, allows passing cache arguments through the API.php fetch_* functions, allows setting API functions on class instantiation, and streamlines a few conditional arguments in the API.
+
 ## Important notice about updating to 1.0.0 from earlier versions
 
 Patreon PHP library version 1.0.0 moves on to Patreon's v2 API, which is not compatible with old v1 calls. It also removes Art4 JSON library. Therefore directly upgrading from older versions to 1.0.0 would break compatibility of your installation. APIv1 will deprecated some time soon after APIv2 come out of beta, so its important to get your integration compatible with API v2. With API v2, you can only get access to the scopes you requested during authorization, and you need to ask for the data you want through includes. 
@@ -18,7 +22,7 @@ NOTE: This library is made to be compatible with the maximum possible variety of
 
 ## Installation
 
-Currently the repo at packagist is at 0.3.x and API v1 only, whereas the one at Github is at 1.0.0 and API v2 due to compatibility reasons for older installations which were done via composer. Until we sync the packagist version with the Github version, please use this repo by cloning it from Github, or downloading and uploading it to your environment via file transfer.
+> php composer.phar require kagurati/patreon:dev-master
 
 ## Usage
 
