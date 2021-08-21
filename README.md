@@ -1,10 +1,12 @@
 # patreon-php
 
-Interact with the Patreon API via OAuth.
+This is Zanaras's fork of the [Patreon-PHP](https://github.com/Patreon/patreon-php) library, which facilitates interacting with the Patreon API via OAuth.
 
 ## Differences from Patreon/patreon-php
 
-This code has been modified in several ways but should be hot-swap capable with Patreon/patreon-php. In particular, it removes an unused variable on the OAuth.php refresh_token function, allows passing cache arguments through the API.php fetch_* functions, allows setting API functions on class instantiation, and streamlines a few conditional arguments in the API.
+This code has been modified in several ways but should be hot-swap capable with Patreon/patreon-php version 1.0.0.
+
+In particular, it removes an unused variable on the OAuth.php refresh_token function, allows passing cache arguments through the API.php fetch_* functions, allows setting API functions on class instantiation, and streamlines a few conditional arguments in the API.
 
 ## Important notice about updating to 1.0.0 from earlier versions
 
@@ -13,8 +15,6 @@ Patreon PHP library version 1.0.0 moves on to Patreon's v2 API, which is not com
 If you were using Art4 library before, you can separately install it and feed the return from API calls to Art4 library after getting it as JSON from this library. This will make your existing code that uses Art4 library compatible. However note that you will need to track Art4 library updates and resulting compatibility issues yourself. 
 
 https://docs.patreon.com/#apiv2-oauth
-
-If you have any questions or issues, please visit our developer forum at https://www.patreondevelopers.com/
 
 NOTE: This library is made to be compatible with the maximum possible variety of different infrastructures, PHP versions and environments in order to cover a majority of potential integrations. If you would like to use more specialized versions of this lib with different amenities and additions/dependencies to better suit your environment, below is a list. If you would like your fork added to this list, please contact us [at the forums](https://www.patreondevelopers.com/).
 
