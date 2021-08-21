@@ -1,11 +1,15 @@
 {
-    "name": "patreon/patreon",
+    "name": "kagurati/patreon",
     "description": "Interact with the Patreon API via OAuth.",
     "license": "MIT",
     "authors": [
         {
             "name": "Patreon",
             "email": "platform-team@patreon.com"
+        },
+        {
+            "name": "Andrew Gwynn",
+            "email": "andrew@lemuriacommunity.org"
         }
     ],
     "minimum-stability": "dev",
