@@ -4,25 +4,13 @@ This is Zanaras's fork of the [Patreon-PHP](https://github.com/Patreon/patreon-p
 
 ## Differences from Patreon/patreon-php
 
-This code has been modified in several ways but should be hot-swap capable with Patreon/patreon-php version 1.0.0.
+This package has been modified in several ways but should be hot-swap capable with Patreon/patreon-php version 1.0.0.
 
-In particular, it removes an unused variable on the OAuth.php refresh_token function, allows passing cache arguments through the API.php fetch_* functions, allows setting API functions on class instantiation, and streamlines a few conditional arguments in the API.
-
-## Important notice about updating to 1.0.0 from earlier versions
-
-Patreon PHP library version 1.0.0 moves on to Patreon's v2 API, which is not compatible with old v1 calls. It also removes Art4 JSON library. Therefore directly upgrading from older versions to 1.0.0 would break compatibility of your installation. APIv1 will deprecated some time soon after APIv2 come out of beta, so its important to get your integration compatible with API v2. With API v2, you can only get access to the scopes you requested during authorization, and you need to ask for the data you want through includes. 
-
-If you were using Art4 library before, you can separately install it and feed the return from API calls to Art4 library after getting it as JSON from this library. This will make your existing code that uses Art4 library compatible. However note that you will need to track Art4 library updates and resulting compatibility issues yourself. 
-
-https://docs.patreon.com/#apiv2-oauth
-
-NOTE: This library is made to be compatible with the maximum possible variety of different infrastructures, PHP versions and environments in order to cover a majority of potential integrations. If you would like to use more specialized versions of this lib with different amenities and additions/dependencies to better suit your environment, below is a list. If you would like your fork added to this list, please contact us [at the forums](https://www.patreondevelopers.com/).
-
-[soatok's fork](https://github.com/soatok/patreon-php) with PHP 7.x, PHPunit, Psalm, BLAKE2b instead of MD5
+In particular, it adds native support for comparatively advanced API calls that request subordinate relationships of the original data object, offers support for flattening the data returns so you don't have to sort through as much yourself, removes an unused variable on the OAuth.php refresh_token function, allows passing cache arguments through the API.php fetch_* functions, allows setting API functions on class instantiation, and streamlines a few conditional arguments in the API.
 
 ## Installation
 
-> php composer.phar require kagurati/patreon:dev-master
+> php composer.phar require kagurati/patreon
 
 ## Usage
 
