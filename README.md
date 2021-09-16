@@ -1,4 +1,5 @@
 # patreon-php
+![Packagist PHP Version Support](https://img.shields.io/packagist/php-v/kagurati/patreon) ![Packagist License](https://img.shields.io/packagist/l/kagurati/patreon)
 
 This is Zanaras's fork of the [Patreon-PHP](https://github.com/Patreon/patreon-php) library, which facilitates interacting with the Patreon API via OAuth.
 
