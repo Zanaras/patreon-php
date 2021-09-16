@@ -2,24 +2,24 @@
 namespace Patreon;
 
 class API {
-	
+
 	// Holds the access token
 	private $access_token;
 
 	// Holds the api endpoint used
-	private $api_endpoint;
+	public $api_endpoint;
 
 	// The cache for request results - an array that matches md5 of the unique API request to the returned result
 	public $request_cache;
 
 	// Sets the reqeuest method for cURL
-	private $api_request_method;
+	public $api_request_method;
 
 	// Holds POST for cURL for requests other than GET
-	private $curl_postfields;
+	public $curl_postfields;
 
 	// Sets the format the return from the API is parsed and returned - array (assoc), object, or raw JSON
-	private $api_return_format;
+	public $api_return_format;
 
 
 	public function __construct($access_token, $api_endpoint = "https://www.patreon.com/api/oauth2/v2/", $api_request_method = 'GET', $api_return_format = 'array', $curl_postfields = false) {
@@ -41,7 +41,7 @@ class API {
 
 	}
 
-	public function fetch_user( $args = [] ) {
+	public function fetch_user( $args = array() ) {
 
 		$starter = 'identity?';
 		if (isset($args['membership'])) {
@@ -79,7 +79,7 @@ class API {
 		return $this->get_data($suffix, $args);
 	}
 
-	public function fetch_detailed_user( $default = true, $args = [] ) {
+	public function fetch_detailed_user( $default = true, $args = array() ) {
 		# This function is a more advanced version of the fetch_user function above,
 		# that requests different data and also tells the get_data function to pass data to a parser before retruning.
 		# Keep in mind, the keys it looks for in args aren't "use this" but rather keys for "request these fields".
@@ -228,12 +228,12 @@ class API {
 		return $this->get_data($suffix, $args);
 	}
 
-	public function fetch_campaigns( $args = [] ) {
+	public function fetch_campaigns( $args = array() ) {
 		// Fetches the list of campaigns of the current token user. Requires the current user to be creator of the campaign or requires a creator access token
 		return $this->get_data("campaigns");
 	}
 
-	public function fetch_campaign_details($campaign_id, $args = [] ) {
+	public function fetch_campaign_details($campaign_id, $args = array() ) {
 		// Fetches details about a campaign - the membership tiers, benefits, creator and goals.  Requires the current user to be creator of the campaign or requires a creator access token
 		$suffix = 'campaigns/{' . $campaign_id . '}?include=benefits,creator,goals,tiers';
 		if ($args['campaign']) {
@@ -388,7 +388,7 @@ class API {
 
 	public function format_request( $request ) {
 		$type = $request['data']['type'];
-		$return = [];
+		$return = array();
 		if ($type == 'user') {
 			$return['user']['id'] = $request['data']['id'];
 			foreach($request['data']['attributes'] as $key=>$data) {
