@@ -22,7 +22,7 @@ NOTE: This library is made to be compatible with the maximum possible variety of
 
 ## Installation
 
-> php composer.phar require kagurati/patreon:dev-master
+> php composer.phar require kagurati/patreon
 
 ## Usage
 
